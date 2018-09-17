@@ -11,11 +11,11 @@
 	$ USB to UART Converter : Siliab's CP2102 
 
 --> Running the executable                                                                             
-	1) Compile the  BSL_invoke.c using gcc on the terminal                                                               
-		
-		gcc -o BSL_invoke BSL_invoke.c                                                                       
+   1) Compile the  BSL_invoke.c using gcc on the terminal                                                               
+			
+	gcc -o BSL_invoke BSL_invoke.c
 	                                                                                                    
-    2) You have to be root to run this executable as Linux won't allow you to access the serial port from user space. So use
-	   "sudo" command to execute the compiled binary as super user.                                   
+   2) You have to be root to run this executable as Linux won't allow you to access the serial port from user space. So use
+      "sudo" command to execute the compiled binary as super user.                                   
                                                                                                            
     	sudo ./BSL_invoke     
