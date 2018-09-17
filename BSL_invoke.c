@@ -27,18 +27,18 @@ void main(void)
 
 	/*------------------ Opening the Serial port ------------------*/
 	/* Change /dev/ttyUSB0 to the one corresponding to your system */
-	/* O_RDWR Read/Write access to serial port           */
+	/* O_RDWR Read/Write access to serial port           */	
 	/* O_NOCTTY - No terminal will control the process   */
 	/* Blocking Mode  */
-    fd = open("/dev/ttyUSB0",O_RDWR | O_NOCTTY );	 
+	fd = open("/dev/ttyUSB0",O_RDWR | O_NOCTTY );	 
 
 			   						                       
-	/* Error Checking */								
-    if(fd == -1) {						
-    	printf("\n    Error! in Opening ttyUSB0  ");
-    }
-    else {
-    	//printf("\n    ttyUSB0 Opened Successfully \n");
+	/* Error Checking */									
+	if(fd == -1) {						
+    		printf("\n    Error! in Opening ttyUSB0  ");
+    	}
+    	else {
+    		//printf("\n    ttyUSB0 Opened Successfully \n");
 	}
 		
 
@@ -48,7 +48,8 @@ void main(void)
 	RTS_flag = TIOCM_RTS; /* Modem Constant for RTS pin */
 	DTR_flag = TIOCM_DTR; /* Modem Constant for DTR pin */
 	
-	/* Initially making RTS and DTR line HIGH as whenever the /dev/ttyUSB0 port is opened, DTR and RTS becomes LOW by default */	
+	/* Initially making RTS and DTR line HIGH as whenever the /dev/ttyUSB0 port is 
+	opened, DTR and RTS becomes LOW by default */	
 	ioctl(fd, TIOCMBIC, &RTS_flag); /* TIOCMBIC - Clear the bit corrosponding to  RTS_flag */
 	ioctl(fd, TIOCMBIC, &DTR_flag); /* TIOCMBIS - Set the bit corrosponding to  DTR_flag */
 	sleep_ms(3000);
