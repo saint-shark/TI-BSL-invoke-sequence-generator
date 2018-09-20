@@ -66,8 +66,8 @@ void main(void)
 	
 	/* Initially making RTS and DTR line HIGH as whenever the /dev/ttyUSB0 port is 
 	opened, DTR and RTS becomes LOW by default */	
-	ioctl(fd, TIOCMBIC, &RTS_flag); /* TIOCMBIC - Clear the bit corrosponding to  RTS_flag */
-	ioctl(fd, TIOCMBIC, &DTR_flag); /* TIOCMBIS - Set the bit corrosponding to  DTR_flag */
+	ioctl(fd, TIOCMBIC, &RTS_flag); /* TIOCMBIC - Clear the bit corrosponding to  RTS_flag...But actually it does the opposite */
+	ioctl(fd, TIOCMBIC, &DTR_flag); /* TIOCMBIS - Set the bit corrosponding to  DTR_flag...But actually it does the opposite */
 	sleep_ms(3000);
 
 	/* Genrating the BSL invoke sequence as mentioned in SLAU550(Figure 2, Page No.- 7) */
@@ -104,7 +104,7 @@ void main(void)
 	sleep_ms(10);
 	ioctl(fd,TIOCMBIC,&RTS_flag);
 	*/
-	
+
 	sleep_ms(2000);
 		
 	/* Close the Opened Serial Port */
