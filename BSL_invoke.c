@@ -71,6 +71,27 @@ void main(void)
 	sleep_ms(3000);
 
 	/* Genrating the BSL invoke sequence as mentioned in SLAU550(Figure 2, Page No.- 7) */
+	
+	//making the TEST line LOW before sending the invoke sequence
+	ioctl(fd, TIOCMBIS, &RTS_flag); 
+	ioctl(fd, TIOCMBIC, &DTR_flag);
+	sleep_ms(3000);
+
+	ioctl(fd, TIOCMBIS, &DTR_flag);
+	sleep_us(50);
+	ioctl(fd, TIOCMBIC, &RTS_flag);
+	sleep_us(50);
+	ioctl(fd, TIOCMBIS, &RTS_flag);
+	sleep_us(50);
+	ioctl(fd, TIOCMBIC, &RTS_flag);
+	sleep_us(50);
+	ioctl(fd, TIOCMBIC, &DTR_flag);
+	sleep_us(50);
+	ioctl(fd, TIOCMBIS, &RTS_flag);
+
+	/* 
+	// old sequence -- maybe wrong
+
 	ioctl(fd,TIOCMBIS,&RTS_flag);
 	sleep_ms(10);
 	ioctl(fd,TIOCMBIC,&RTS_flag); 
@@ -82,6 +103,7 @@ void main(void)
 	ioctl(fd,TIOCMBIS,&DTR_flag); 
 	sleep_ms(10);
 	ioctl(fd,TIOCMBIC,&RTS_flag);
+	*/
 	
 	sleep_ms(2000);
 		
