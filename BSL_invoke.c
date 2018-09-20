@@ -20,6 +20,22 @@ void sleep_ms(int milliseconds)
 }
 
 
+void sleep_us(int microseconds)
+{
+    ts.tv_sec = microseconds / 1000000;
+    ts.tv_nsec = (microseconds % 1000000) * 1000;
+    nanosleep(&ts, NULL);
+}
+
+
+void sleep_ns(int long nanoseconds)
+{
+  ts.tv_sec = nanoseconds / 1000000;
+  ts.tv_nsec = nanoseconds;
+  nanosleep(&ts, NULL);
+}
+
+
 void main(void)
 {
 	int fd;	/*File Descriptor*/
