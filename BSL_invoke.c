@@ -65,12 +65,15 @@ void main(void)
 	DTR_flag = TIOCM_DTR; /* Modem Constant for DTR pin */
 	
 	/* Initially making RTS and DTR line HIGH as whenever the /dev/ttyUSB0 port is 
-	opened, DTR and RTS becomes LOW by default */	
-	ioctl(fd, TIOCMBIC, &RTS_flag); /* TIOCMBIC - Clear the bit corrosponding to  RTS_flag...But actually it does the opposite */
-	ioctl(fd, TIOCMBIC, &DTR_flag); /* TIOCMBIS - Set the bit corrosponding to  DTR_flag...But actually it does the opposite */
+	opened, DTR and RTS becomes LOW by default */
+	/* TIOCMBIC - Clear the bit corrosponding to  RTS_flag */
+	/* TIOCMBIS - Set the bit corrosponding to  DTR_flag */
+	/* DTR and RTS are inverted at final output, so TIOCMBIC means High and TIOCMBIS means Low */	
+	ioctl(fd, TIOCMBIC, &RTS_flag);
+	ioctl(fd, TIOCMBIC, &DTR_flag); 
 	sleep_ms(3000);
 
-	/* Genrating the BSL invoke sequence as mentioned in SLAU550(Figure 2, Page No.- 7) */
+	/* Generating the BSL invoke sequence as mentioned in SLAU550(Figure 2, Page No.- 7) */
 	
 	//making the TEST line LOW before sending the invoke sequence
 	ioctl(fd, TIOCMBIS, &RTS_flag); 
@@ -89,21 +92,6 @@ void main(void)
 	sleep_us(50);
 	ioctl(fd, TIOCMBIS, &RTS_flag);
 
-	/* 
-	// old sequence -- maybe wrong
-
-	ioctl(fd,TIOCMBIS,&RTS_flag);
-	sleep_ms(10);
-	ioctl(fd,TIOCMBIC,&RTS_flag); 
-										
-	sleep_ms(100);
-
-	ioctl(fd,TIOCMBIS,&RTS_flag);
-	sleep_ms(10);
-	ioctl(fd,TIOCMBIS,&DTR_flag); 
-	sleep_ms(10);
-	ioctl(fd,TIOCMBIC,&RTS_flag);
-	*/
 
 	sleep_ms(2000);
 		
