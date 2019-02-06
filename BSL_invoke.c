@@ -8,7 +8,7 @@
 #include <time.h>
 #include <unistd.h>
 
-
+unsigned int pulsetime = 10;
 struct timespec ts;
 
 
@@ -64,33 +64,46 @@ void main(void)
 	RTS_flag = TIOCM_RTS; /* Modem Constant for RTS pin */
 	DTR_flag = TIOCM_DTR; /* Modem Constant for DTR pin */
 	
+	
+	/* Generating the BSL invoke sequence as mentioned in SLAU550(Figure 2, Page No.- 7) */
+
+	/*
+	____________                            _____________________
+	DTR->RST	|__________________________|
+
+	____________        ______        ____________
+	RTS->TEST	|______|      |______|            |______________
+				<-10ms->
+
+	*/
+
 	/* Initially making RTS and DTR line HIGH as whenever the /dev/ttyUSB0 port is 
 	opened, DTR and RTS becomes LOW by default */
 	/* TIOCMBIC - Clear the bit corrosponding to  RTS_flag */
 	/* TIOCMBIS - Set the bit corrosponding to  DTR_flag */
 	/* DTR and RTS are inverted at final output, so TIOCMBIC means High and TIOCMBIS means Low */	
-	ioctl(fd, TIOCMBIC, &RTS_flag);
-	ioctl(fd, TIOCMBIC, &DTR_flag); 
+	ioctl(fd, TIOCMBIC, &RTS_flag); // RTS --> High
+	ioctl(fd, TIOCMBIC, &DTR_flag); // DTR --> High
 	sleep_ms(3000);
-
-	/* Generating the BSL invoke sequence as mentioned in SLAU550(Figure 2, Page No.- 7) */
 	
 	//making the TEST line LOW before sending the invoke sequence
-	ioctl(fd, TIOCMBIS, &RTS_flag); 
-	ioctl(fd, TIOCMBIC, &DTR_flag);
-	sleep_ms(3000);
-
-	ioctl(fd, TIOCMBIS, &DTR_flag);
-	sleep_us(50);
-	ioctl(fd, TIOCMBIC, &RTS_flag);
-	sleep_us(50);
-	ioctl(fd, TIOCMBIS, &RTS_flag);
-	sleep_us(50);
-	ioctl(fd, TIOCMBIC, &RTS_flag);
-	sleep_us(50);
-	ioctl(fd, TIOCMBIC, &DTR_flag);
-	sleep_us(50);
-	ioctl(fd, TIOCMBIS, &RTS_flag);
+	//ioctl(fd, TIOCMBIS, &RTS_flag); 
+	//ioctl(fd, TIOCMBIC, &DTR_flag);
+	//sleep_ms(3000);	
+			  						
+			
+	ioctl(fd, TIOCMBIS, &DTR_flag); // DTR --> Low
+	ioctl(fd, TIOCMBIS, &RTS_flag); // RTS --> Low
+	sleep_ms(pulsetime);			// delay --> 10ms
+	ioctl(fd, TIOCMBIC, &RTS_flag);	// RTS --> High
+	sleep_ms(pulsetime);			// delay --> 10ms
+	ioctl(fd, TIOCMBIS, &RTS_flag);	// RTS --> Low
+	sleep_ms(pulsetime);			// delay --> 10ms
+	ioctl(fd, TIOCMBIC, &RTS_flag);	// RTS --> High
+	sleep_ms(pulsetime);			// delay --> 10ms
+	ioctl(fd, TIOCMBIC, &DTR_flag);	// DTR --> High
+	sleep_ms(pulsetime);			// delay --> 10ms
+	ioctl(fd, TIOCMBIS, &RTS_flag);	// RTS --> Low
 
 
 	sleep_ms(2000);
